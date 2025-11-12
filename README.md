@@ -11,6 +11,10 @@ Official MCP Server for [ListenHub](https://listenhub.ai/), supporting AI podcas
 <a href="https://github.com/marswaveai/listenhub-mcp-server/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/npm/l/%40marswave%2Flistenhub-mcp-server?color=blue" /></a>
 </p>
 
+<a href="https://glama.ai/mcp/servers/@marswaveai/listenhub-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@marswaveai/listenhub-mcp-server/badge" alt="ListenHub Server MCP server" />
+</a>
+
 English | [简体中文](README_zh.md)
 
 ## Quick Start
