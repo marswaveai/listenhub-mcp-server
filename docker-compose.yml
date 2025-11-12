@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  listenhub-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: listenhub-mcp-server
+    environment:
+      - LISTENHUB_API_KEY=${LISTENHUB_API_KEY}
+      - TRANSPORT=${TRANSPORT:-stdio}
+      - PORT=${PORT:-3000}
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+

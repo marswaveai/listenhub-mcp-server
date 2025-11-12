@@ -1,0 +1,47 @@
+# Dependencies
+node_modules
+
+# Build output (will be generated in container)
+build
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+.cursor
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# Linter and formatter
+.eslintrc.js
+.eslintignore
+.prettierrc.js
+
+# Tests
+tests
+*.test.ts
+*.spec.ts
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

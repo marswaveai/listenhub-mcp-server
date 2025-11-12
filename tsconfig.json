@@ -1,0 +1,6 @@
+{
+  "extends": "@sindresorhus/tsconfig",
+  "compilerOptions": {
+    "erasableSyntaxOnly": false
+  }
+}

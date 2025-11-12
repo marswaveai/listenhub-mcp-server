@@ -1,0 +1,60 @@
+{
+  "name": "@marswave/listenhub-mcp-server",
+  "description": "Official MCP server for Listenhub - The AI Voice for Every Creator.",
+  "version": "1.0.0",
+  "author": "marswave",
+  "license": "apache-2.0",
+  "type": "module",
+  "bin": {
+    "listenhub-mcp-server": "./distribution/start-server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "distribution"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marswaveai/listenhub-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marswaveai/listenhub-mcp-server/issues"
+  },
+  "homepage": "https://github.com/marswaveai/listenhub-mcp-server#readme",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "del-cli distribution && tsc && chmod +x distribution/start-server.js",
+    "build:dev": "del-cli distribution && tsc --watch && chmod +x distribution/start-server.js",
+    "dev": "npm run build:dev && node distribution/start-server.js",
+    "dev:http": "npm run build:dev && node distribution/start-server.js --transport http --port 8080",
+    "dev:sse": "npm run build:dev && node distribution/start-server.js --transport sse --port 8080",
+    "start": "node distribution/start-server.js",
+    "test": "xo"
+  },
+  "keywords": [
+    "listenhub",
+    "marswave",
+    "mcp",
+    "podcast",
+    "flowspeech"
+  ],
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@litomore/xo-config": "^0.1.0",
+    "@sindresorhus/tsconfig": "^8.1.0",
+    "@types/node": "^24.10.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "del-cli": "^7.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "typescript": "^5.9.3",
+    "xo": "^1.2.3"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "fastmcp": "^3.22.0",
+    "zod": "^3.25.76"
+  }
+}
