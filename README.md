@@ -9,9 +9,9 @@ Official MCP Server for [ListenHub](https://listenhub.ai/), supporting AI podcas
 <br />
 <a href="https://www.npmjs.com/package/%40marswave%2Flistenhub-mcp-server"><img alt="npm version" src="https://img.shields.io/npm/v/%40marswave%2Flistenhub-mcp-server?logo=npm" /></a>
 <a href="https://github.com/marswaveai/listenhub-mcp-server/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/npm/l/%40marswave%2Flistenhub-mcp-server?color=blue" /></a>
+<br />
+English | <a href="https://github.com/marswaveai/listenhub-mcp-server/blob/main/README_zh.md">简体中文</a>
 </p>
-
-English | [简体中文](README_zh.md)
 
 ## Quick Start
 

@@ -9,9 +9,9 @@
 <br />
 <a href="https://www.npmjs.com/package/%40marswave%2Flistenhub-mcp-server"><img alt="npm version" src="https://img.shields.io/npm/v/%40marswave%2Flistenhub-mcp-server?logo=npm" /></a>
 <a href="https://github.com/marswaveai/listenhub-mcp-server/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/npm/l/%40marswave%2Flistenhub-mcp-server?color=blue" /></a>
+<br />
+<a href="https://github.com/marswaveai/listenhub-mcp-server/blob/main/README.md">English</a> | 简体中文
 </p>
-
-[English](README.md) | 简体中文
 
 ## 快速开始
 
