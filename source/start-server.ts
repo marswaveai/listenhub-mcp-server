@@ -64,10 +64,6 @@ switch (transport.toLowerCase()) {
 	}
 }
 
-console.error('[ListenHub MCP] Server version: 1.0.0');
-console.error(
-	`[ListenHub MCP] API Base URL: ${process.env['LISTENHUB_BASE_URL']}`,
-);
+console.error('[ListenHub MCP] Server version: 1.1.0');
 console.error('[ListenHub MCP] Ready to accept connections\n');
-
 await server.start(startArgs);

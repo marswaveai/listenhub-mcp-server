@@ -1,7 +1,7 @@
 {
   "name": "@marswave/listenhub-mcp-server",
   "description": "Official MCP server for Listenhub - The AI Voice for Every Creator.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "marswave",
   "license": "apache-2.0",
   "type": "module",

@@ -38,7 +38,7 @@ const client = new ListenHubClient({
 
 const server = new FastMCP({
 	name: 'listenhub-mcp-server',
-	version: '1.0.0',
+	version: '1.1.0',
 });
 
 registerAllTools(server, client);

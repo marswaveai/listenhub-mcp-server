@@ -38,7 +38,7 @@ export abstract class BaseClient {
 				'Content-Type': 'application/json',
 				// eslint-disable-next-line @typescript-eslint/naming-convention
 				Authorization: `Bearer ${config.apiKey}`,
-				'User-Agent': 'listenhub-mcp-server/1.0.0',
+				'User-Agent': 'listenhub-mcp-server/1.1.0',
 			},
 			timeout: 30_000,
 		});
