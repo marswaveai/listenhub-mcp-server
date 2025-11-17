@@ -52,6 +52,7 @@
     "xo": "^1.2.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.21.2",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "fastmcp": "^3.22.0",
