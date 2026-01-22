@@ -3,7 +3,7 @@
 Official MCP Server for [ListenHub](https://listenhub.ai/), supporting AI podcast generation (single or dual-speaker), FlowSpeech creation, and more. Available for ListenHub Pro plan and above.
 
 <p align="center">
-<a href="https://listenhub.ai"><img alt="ListenHub website" src="https://img.shields.io/badge/Made%20by%20ListenHub-000?logo=listenhub&logoColor=fff&logoSize=auto" /></a>
+<a href="https://listenhub.ai"><img alt="ListenHub website" src="https://img.shields.io/badge/Made%20by%20ListenHub-000?logo=listenhub&logoColor=fff" /></a>
 <a href="https://discord.gg/ZbwA7g2guU"><img alt="Discord" src="https://img.shields.io/discord/1365293903405645886?label=Discord&logo=discord&color=eee&labelColor=5865f2&logoColor=fff" /></a>
 <a href="https://x.com/ListenHub"><img alt="ListenHub X/Twitter" src="https://img.shields.io/twitter/follow/ListenHub?logo=x" /></a>
 <br />
