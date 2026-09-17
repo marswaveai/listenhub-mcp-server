@@ -22,7 +22,7 @@ import type {HttpAuthSession} from './auth.js';
 import {ListenHubClient} from './client/index.js';
 import {registerAllTools} from './tools/index.js';
 
-// quiet: dotenv 17 otherwise prints a tip line to stdout, which is the
+// Quiet: dotenv 17 otherwise prints a tip line to stdout, which is the
 // JSON-RPC channel in stdio mode.
 dotenv.config({debug: false, quiet: true});
 
