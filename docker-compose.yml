@@ -8,11 +8,12 @@ services:
     container_name: listenhub-mcp-server
     environment:
       - LISTENHUB_API_KEY=${LISTENHUB_API_KEY}
+      - MCP_AUTH_TOKEN=${MCP_AUTH_TOKEN}
       - TRANSPORT=${TRANSPORT:-stdio}
       - PORT=${PORT:-3000}
+      - HOST=${HOST:-0.0.0.0}
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
     restart: unless-stopped
     stdin_open: true
     tty: true
-

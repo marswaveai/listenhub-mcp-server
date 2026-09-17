@@ -14,9 +14,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import type {IncomingMessage} from 'node:http';
 import process from 'node:process';
 import dotenv from 'dotenv';
 import {FastMCP} from 'fastmcp';
+import type {HttpAuthSession} from './auth.js';
 import {ListenHubClient} from './client/index.js';
 import {registerAllTools} from './tools/index.js';
 
@@ -36,11 +38,19 @@ const client = new ListenHubClient({
 	apiKey: listenhubApiKey,
 });
 
-const server = new FastMCP({
-	name: 'listenhub-mcp-server',
-	version: '1.1.0',
-});
+export const serverVersion = '1.2.0';
 
-registerAllTools(server, client);
+export type CreateServerOptions = {
+	authenticate?: (request: IncomingMessage) => Promise<HttpAuthSession>;
+};
 
-export default server;
+export function createServer(options: CreateServerOptions = {}) {
+	const server = new FastMCP({
+		name: 'listenhub-mcp-server',
+		version: serverVersion,
+		...(options.authenticate ? {authenticate: options.authenticate} : {}),
+	});
+
+	registerAllTools(server, client);
+	return server;
+}

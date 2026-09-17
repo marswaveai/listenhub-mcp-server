@@ -29,8 +29,13 @@ COPY --from=builder /app/package.json /app/package.json
 # Install only production dependencies
 RUN npm install --omit=dev --ignore-scripts
 
-# Set environment variables for API key
+# Set environment variables for API key and HTTP-mode auth token
 ENV LISTENHUB_API_KEY=""
+ENV MCP_AUTH_TOKEN=""
+
+# Inside a container the HTTP listener must bind all interfaces to be
+# published; the token gate above is what protects it.
+ENV HOST=0.0.0.0
 
 # Expose default ports for HTTP transports
 EXPOSE 3000 8080

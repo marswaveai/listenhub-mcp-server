@@ -15,7 +15,8 @@
 // under the License.
 
 import process from 'node:process';
-import server from './main.js';
+import {createTokenAuthenticator} from './auth.js';
+import {createServer, serverVersion} from './main.js';
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -24,38 +25,70 @@ const getArgValue = (flag: string): string | undefined => {
 	return index !== -1 && index + 1 < args.length ? args[index + 1] : undefined;
 };
 
+const hasFlag = (flag: string): boolean => args.includes(flag);
+
 // Get transport mode from command line or environment variable
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 const transport =
 	getArgValue('--transport') || process.env['TRANSPORT'] || 'stdio';
 const port = Number(getArgValue('--port') || process.env['PORT'] || 3000);
+const host = getArgValue('--host') || process.env['HOST'] || '127.0.0.1';
+const authToken = getArgValue('--auth-token') || process.env['MCP_AUTH_TOKEN'];
+const allowUnauthenticated =
+	hasFlag('--allow-unauthenticated') ||
+	process.env['MCP_ALLOW_UNAUTHENTICATED'] === 'true';
 /* eslint-enable @typescript-eslint/prefer-nullish-coalescing */
 
-type StartArgs = Parameters<typeof server.start>[0];
+type Server = ReturnType<typeof createServer>;
+type StartArgs = Parameters<Server['start']>[0];
 
+let server: Server;
 let startArgs: StartArgs;
 
 switch (transport.toLowerCase()) {
 	case 'http':
 	case 'httpstream':
 	case 'sse': {
+		// Every HTTP session proxies the operator's LISTENHUB_API_KEY, so an
+		// unauthenticated listener hands that key's credits to whoever can reach
+		// the port. Refuse to start rather than default to open.
+		if (!authToken && !allowUnauthenticated) {
+			console.error(
+				'Error: HTTP/SSE transport requires MCP_AUTH_TOKEN (or --auth-token).',
+			);
+			console.error(
+				'Clients must send "Authorization: Bearer <token>". To run without authentication on a trusted network, pass --allow-unauthenticated (or MCP_ALLOW_UNAUTHENTICATED=true).',
+			);
+			process.exit(1);
+		}
+
+		server = createServer(
+			authToken ? {authenticate: createTokenAuthenticator(authToken)} : {},
+		);
 		startArgs = {
 			transportType: 'httpStream',
 			httpStream: {
 				endpoint: '/mcp',
+				host,
 				port,
 			},
 		};
-		console.error(`[ListenHub MCP] HTTP server running on port ${port}`);
+		console.error(`[ListenHub MCP] HTTP server running on ${host}:${port}`);
 		console.error(
-			`[ListenHub MCP] HTTP Stream endpoint: http://localhost:${port}/mcp`,
+			`[ListenHub MCP] HTTP Stream endpoint: http://${host}:${port}/mcp`,
 		);
-		console.error(`[ListenHub MCP] SSE endpoint: http://localhost:${port}/sse`);
+		console.error(`[ListenHub MCP] SSE endpoint: http://${host}:${port}/sse`);
 		console.error('[ListenHub MCP] Transport: HTTP Stream + SSE');
+		console.error(
+			authToken
+				? '[ListenHub MCP] Authentication: Bearer token required'
+				: '[ListenHub MCP] Authentication: DISABLED (--allow-unauthenticated)',
+		);
 		break;
 	}
 
 	default: {
+		server = createServer();
 		startArgs = {
 			transportType: 'stdio',
 		};
@@ -64,6 +97,6 @@ switch (transport.toLowerCase()) {
 	}
 }
 
-console.error('[ListenHub MCP] Server version: 1.1.0');
+console.error(`[ListenHub MCP] Server version: ${serverVersion}`);
 console.error('[ListenHub MCP] Ready to accept connections\n');
 await server.start(startArgs);

@@ -19,7 +19,6 @@ import type {ListenHubClient} from '../client/index.js';
 import type {
 	CreatePodcastContentOnlyRequest,
 	CreatePodcastRequest,
-	PodcastSource,
 } from '../types/index.js';
 import {
 	formatError,
@@ -124,7 +123,7 @@ export function registerPodcastTools(server: FastMCP, client: ListenHubClient) {
 				}
 
 				if (args.sources && args.sources.length > 0) {
-					requestData.sources = args.sources as PodcastSource[];
+					requestData.sources = args.sources;
 				}
 
 				const submitResponse = await client.podcast.createPodcast(requestData);
@@ -347,7 +346,7 @@ ${formatPodcastEpisode(episode)}`;
 				}
 
 				if (args.sources && args.sources.length > 0) {
-					requestData.sources = args.sources as PodcastSource[];
+					requestData.sources = args.sources;
 				}
 
 				const submitResponse =

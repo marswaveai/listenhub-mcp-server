@@ -142,9 +142,10 @@
   ```
   将 `your_api_key_here` 替换为您从 ListenHub 获取的实际 API 密钥。
   **可选：HTTP 模式**
-  如需使用 HTTP 传输方式，手动启动服务器：
+  如需使用 HTTP 传输方式，手动启动服务器并设置鉴权 token（见 [HTTP/SSE 模式](#httpsse-模式)）：
   ```bash
   export LISTENHUB_API_KEY="your_api_key_here"
+  export MCP_AUTH_TOKEN="your_mcp_auth_token"
   npx @marswave/listenhub-mcp-server --transport http --port 3000
   ```
   然后配置 Cursor：
@@ -152,7 +153,10 @@
   {
     "mcpServers": {
       "listenhub": {
-        "url": "http://localhost:3000/mcp"
+        "url": "http://localhost:3000/mcp",
+        "headers": {
+          "Authorization": "Bearer your_mcp_auth_token"
+        }
       }
     }
   }
@@ -304,22 +308,31 @@
 
 对于高级使用场景，您可以以 HTTP 模式运行服务器，同时提供 HTTP 流和服务器发送事件（SSE）端点。
 
+HTTP 模式下所有请求都用您的 `LISTENHUB_API_KEY` 执行，因此监听端口不能让别人访问到。服务器为此：
+
+- **必须配置鉴权 token**（`MCP_AUTH_TOKEN` 或 `--auth-token`），未配置时拒绝启动；
+- **默认只绑定 `127.0.0.1`**；只有确实需要其他机器访问时才用 `--host 0.0.0.0`（或 `HOST`）。
+
 **启动 HTTP 模式服务器：**
 
 ```bash
 # macOS/Linux
 export LISTENHUB_API_KEY="your_api_key_here"
+export MCP_AUTH_TOKEN="$(openssl rand -hex 32)"   # 任意足够长的随机字符串
 npx @marswave/listenhub-mcp-server --transport http --port 3000
 # Windows
 set LISTENHUB_API_KEY=your_api_key_here
+set MCP_AUTH_TOKEN=your_mcp_auth_token
 
 npx @marswave/listenhub-mcp-server --transport http --port 3000
 ```
 
 **可用端点：**
 
-- HTTP 流：`http://localhost:3000/mcp`
-- 服务器发送事件：`http://localhost:3000/sse`
+- HTTP 流：`http://127.0.0.1:3000/mcp`
+- 服务器发送事件：`http://127.0.0.1:3000/sse`
+
+请求缺少有效的 `Authorization: Bearer <MCP_AUTH_TOKEN>` 头（也接受 `x-api-key: <MCP_AUTH_TOKEN>`）时返回 `401 Unauthorized`。
 
 **配置您的 MCP 客户端使用 HTTP 端点：**
 
@@ -327,11 +340,26 @@ npx @marswave/listenhub-mcp-server --transport http --port 3000
 {
   "mcpServers": {
     "listenhub": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://127.0.0.1:3000/mcp",
+      "headers": {
+        "Authorization": "Bearer your_mcp_auth_token"
+      }
     }
   }
 }
 ```
+
+**命令行参数 / 环境变量：**
+
+| 参数 | 环境变量 | 默认值 | 说明 |
+|------|----------|--------|------|
+| `--transport` | `TRANSPORT` | `stdio` | `stdio`、`http` 或 `sse` |
+| `--port` | `PORT` | `3000` | HTTP 监听端口 |
+| `--host` | `HOST` | `127.0.0.1` | HTTP 绑定地址 |
+| `--auth-token` | `MCP_AUTH_TOKEN` | — | HTTP/SSE 模式必填 |
+| `--allow-unauthenticated` | `MCP_ALLOW_UNAUTHENTICATED=true` | 关 | 允许无 token 启动 HTTP/SSE 模式。仅限隔离网络：能连到端口的人都能消耗您的积分 |
+
+**Docker：** 镜像默认 `HOST=0.0.0.0` 以便端口映射生效；使用 `TRANSPORT=http` 前请先在 `.env` 里设置 `MCP_AUTH_TOKEN`。
 
 ## 可用工具
 

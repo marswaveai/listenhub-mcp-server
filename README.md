@@ -142,9 +142,10 @@ Get your API key from the [ListenHub API Keys Settings](https://listenhub.ai/en/
   ```
   Replace `your_api_key_here` with your actual API key obtained from ListenHub.
   **Optional: HTTP Mode**
-  To use HTTP transport, manually start the server:
+  To use HTTP transport, manually start the server with an auth token (see [HTTP/SSE Mode](#httpsse-mode)):
   ```bash
   export LISTENHUB_API_KEY="your_api_key_here"
+  export MCP_AUTH_TOKEN="your_mcp_auth_token"
   npx @marswave/listenhub-mcp-server --transport http --port 3000
   ```
   Then configure Cursor:
@@ -152,7 +153,10 @@ Get your API key from the [ListenHub API Keys Settings](https://listenhub.ai/en/
   {
     "mcpServers": {
       "listenhub": {
-        "url": "http://localhost:3000/mcp"
+        "url": "http://localhost:3000/mcp",
+        "headers": {
+          "Authorization": "Bearer your_mcp_auth_token"
+        }
       }
     }
   }
@@ -304,22 +308,31 @@ All configuration examples above use stdio mode by default, requiring no additio
 
 For advanced use cases, you can run the server in HTTP mode, providing both HTTP streaming and Server-Sent Events (SSE) endpoints.
 
+In HTTP mode every request is executed with your `LISTENHUB_API_KEY`, so the listener must not be reachable by anyone else. The server therefore:
+
+- **requires an auth token** (`MCP_AUTH_TOKEN` or `--auth-token`) and refuses to start without one;
+- **binds to `127.0.0.1` by default**; pass `--host 0.0.0.0` (or `HOST`) only when the port is meant to be reachable from other machines.
+
 **Start the server in HTTP mode:**
 
 ```bash
 # macOS/Linux
 export LISTENHUB_API_KEY="your_api_key_here"
+export MCP_AUTH_TOKEN="$(openssl rand -hex 32)"   # any long random secret
 npx @marswave/listenhub-mcp-server --transport http --port 3000
 # Windows
 set LISTENHUB_API_KEY=your_api_key_here
+set MCP_AUTH_TOKEN=your_mcp_auth_token
 
 npx @marswave/listenhub-mcp-server --transport http --port 3000
 ```
 
 **Available endpoints:**
 
-- HTTP Streaming: `http://localhost:3000/mcp`
-- Server-Sent Events: `http://localhost:3000/sse`
+- HTTP Streaming: `http://127.0.0.1:3000/mcp`
+- Server-Sent Events: `http://127.0.0.1:3000/sse`
+
+Requests without a valid `Authorization: Bearer <MCP_AUTH_TOKEN>` header (an `x-api-key: <MCP_AUTH_TOKEN>` header is also accepted) receive `401 Unauthorized`.
 
 **Configure your MCP client to use HTTP endpoint:**
 
@@ -327,11 +340,26 @@ npx @marswave/listenhub-mcp-server --transport http --port 3000
 {
   "mcpServers": {
     "listenhub": {
-      "url": "http://localhost:3000/mcp"
+      "url": "http://127.0.0.1:3000/mcp",
+      "headers": {
+        "Authorization": "Bearer your_mcp_auth_token"
+      }
     }
   }
 }
 ```
+
+**Command-line options / environment variables:**
+
+| Flag | Env | Default | Description |
+|------|-----|---------|-------------|
+| `--transport` | `TRANSPORT` | `stdio` | `stdio`, `http` or `sse` |
+| `--port` | `PORT` | `3000` | HTTP listen port |
+| `--host` | `HOST` | `127.0.0.1` | HTTP bind address |
+| `--auth-token` | `MCP_AUTH_TOKEN` | — | Required in HTTP/SSE mode |
+| `--allow-unauthenticated` | `MCP_ALLOW_UNAUTHENTICATED=true` | off | Start HTTP/SSE mode without a token. Only for isolated networks; anyone who can reach the port can spend your credits |
+
+**Docker:** the image sets `HOST=0.0.0.0` so the published port works; set `MCP_AUTH_TOKEN` in your `.env` before `docker compose up` with `TRANSPORT=http`.
 
 ## Available Tools
 

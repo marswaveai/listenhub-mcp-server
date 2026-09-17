@@ -1,7 +1,7 @@
 {
   "name": "@marswave/listenhub-mcp-server",
   "description": "Official MCP server for Listenhub - The AI Voice for Every Creator.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "marswave",
   "license": "apache-2.0",
   "type": "module",
@@ -30,7 +30,8 @@
     "dev:http": "npm run build:dev && node distribution/start-server.js --transport http --port 8080",
     "dev:sse": "npm run build:dev && node distribution/start-server.js --transport sse --port 8080",
     "start": "node distribution/start-server.js",
-    "test": "xo"
+    "test": "xo",
+    "test:unit": "node --test \"distribution/**/*.test.js\""
   },
   "keywords": [
     "listenhub",
@@ -55,7 +56,7 @@
     "@modelcontextprotocol/sdk": "1.21.2",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
-    "fastmcp": "^3.22.0",
+    "fastmcp": "^3.35.0",
     "zod": "^3.25.76"
   }
 }
