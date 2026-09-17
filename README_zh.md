@@ -153,7 +153,7 @@
   {
     "mcpServers": {
       "listenhub": {
-        "url": "http://localhost:3000/mcp",
+        "url": "http://127.0.0.1:3000/mcp",
         "headers": {
           "Authorization": "Bearer your_mcp_auth_token"
         }

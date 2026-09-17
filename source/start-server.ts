@@ -22,7 +22,9 @@ import {createServer, serverVersion} from './main.js';
 const args = process.argv.slice(2);
 const getArgValue = (flag: string): string | undefined => {
 	const index = args.indexOf(flag);
-	return index !== -1 && index + 1 < args.length ? args[index + 1] : undefined;
+	const value = index === -1 ? undefined : args[index + 1];
+	// A following flag means the value is missing, not that the flag is the value.
+	return value?.startsWith('--') ? undefined : value;
 };
 
 const hasFlag = (flag: string): boolean => args.includes(flag);

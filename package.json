@@ -12,7 +12,8 @@
     "node": ">=18"
   },
   "files": [
-    "distribution"
+    "distribution",
+    "!distribution/**/*.test.*"
   ],
   "repository": {
     "type": "git",

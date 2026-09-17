@@ -22,7 +22,9 @@ import type {HttpAuthSession} from './auth.js';
 import {ListenHubClient} from './client/index.js';
 import {registerAllTools} from './tools/index.js';
 
-dotenv.config({debug: false});
+// quiet: dotenv 17 otherwise prints a tip line to stdout, which is the
+// JSON-RPC channel in stdio mode.
+dotenv.config({debug: false, quiet: true});
 
 const listenhubApiKey = process.env['LISTENHUB_API_KEY'] ?? '';
 const listenHubBaseUrl =

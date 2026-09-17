@@ -26,9 +26,9 @@ export function extractBearerToken(
 ): string | undefined {
 	const {authorization} = headers;
 	if (typeof authorization === 'string') {
-		const [scheme, ...rest] = authorization.trim().split(/\s+/);
-		if (scheme?.toLowerCase() === 'bearer' && rest.length > 0) {
-			return rest.join(' ');
+		const bearer = /^bearer\s+(.+)$/i.exec(authorization.trim());
+		if (bearer?.[1]) {
+			return bearer[1];
 		}
 	}
 

@@ -36,6 +36,11 @@ await test('extractBearerToken reads Authorization: Bearer', () => {
 		extractBearerToken({authorization: 'bearer   secret-token'}),
 		'secret-token',
 	);
+	assert.equal(
+		extractBearerToken({authorization: 'Bearer with  inner spaces'}),
+		'with  inner spaces',
+	);
+	assert.equal(extractBearerToken({authorization: 'Bearer '}), undefined);
 });
 
 await test('extractBearerToken falls back to x-api-key', () => {
